@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+###> doctrine/doctrine-bundle ###
+  database:
+    image: library/mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: shop
+    ports:
+      - 3306:3306
+  
+  phpmyadmin:
+    depends_on:
+      - database
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - 8088:80
+    environment:
+      PMA_HOST: database
+      MYSQL_ROOT_PASSWORD: root
