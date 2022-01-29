@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -43,6 +45,11 @@ class Product
      */
     private $Date;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Tag::class, inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $tag;
 
     public function getDate(): ?\DateTimeInterface
     {
@@ -98,5 +105,15 @@ class Product
         $this->price = $price;
 
         return $this;
+    }
+    public function setTag(?Tag $tag): self
+    {
+        $this->tag = $tag;
+
+        return $this;
+    }
+    public function getTag(): ?Tag
+    {
+        return $this->tag;
     }
 }

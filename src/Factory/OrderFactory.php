@@ -5,6 +5,7 @@ namespace App\Factory;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Entity\Product;
+use App\Factory\TagFactory;
 
 /**
  * Class OrderFactory
@@ -25,6 +26,7 @@ class OrderFactory
         ->setStatus(Order::STATUS_CART)
         ->setCreatedAt(new \DateTime())
         ->setUpdatedAt(new \DateTime());
+
         
         return $order;
     }
@@ -40,7 +42,6 @@ class OrderFactory
         $item = new OrderItem();
         $item->setProduct($product);
         $item->setQuantity(1);
-        
         return $item;
     }
 }
