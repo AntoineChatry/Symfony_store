@@ -41,7 +41,7 @@ class Product
         return $this->id;
     }
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $Date;
 
@@ -51,20 +51,30 @@ class Product
      */
     private $tag;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="products")
+     */
+    private $creator;
+
+    public function getCreator(): ?User
+    {
+        return $this->creator;
+    }
+    public function setCreator(?User $creator): self
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
+
     public function getDate(): ?\DateTimeInterface
     {
         return $this->Date;
     }
 
-    public function setDate(string $Date): self
+    public function setDate(\DateTimeInterface $Date): self
     {
-        try {
-
-            $this->Date = new \DateTime($Date);
-        }
-        catch(\Exception $e) {
-        //Do Nothing
-        }
+        $this->Date = $Date;
 
         return $this;
 

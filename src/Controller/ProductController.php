@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Form\CreateProductForm;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class ProductController
@@ -42,4 +44,37 @@ class ProductController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    /**
+     * @Route("addProducts", name="addProducts", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function addProducts(Request $request, EntityManagerInterface $em): Response
+    {
+        $product = new Product();
+        $form = $this->createForm(CreateProductForm::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $product = $form->getData();
+            $product->setCreator($this->getUser());
+            $product->setDate(new \DateTime());
+
+            $em->persist($product);
+            $em->flush();
+            return $this->redirectToRoute('home');
+        }
+        return $this->render('product/addProducts.html.twig', [
+            'addForm' => $form->createView(),
+        ]);
+    }
+    /**
+     * @Route("/product/delete/{id}", name="product.delete")
+     */
+    public function delete(Product $product, EntityManagerInterface $em): Response
+    {
+        $em->remove($product);
+        $em->flush();
+        return $this->redirectToRoute('home');
+    }
+
 }

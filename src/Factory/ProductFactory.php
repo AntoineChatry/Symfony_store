@@ -8,6 +8,7 @@ use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 
+
 /**
  * @extends ModelFactory<Product>
  *
@@ -43,6 +44,7 @@ final class ProductFactory extends ModelFactory
             'description' => self::faker()->text(50),
             'price' => self::faker()->randomFloat(),
             'tag' => TagFactory::random(),
+            'Date' => new \DateTime,
         ];
     }
 

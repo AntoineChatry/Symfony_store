@@ -30,6 +30,13 @@
                     </div>
                     {{ form_widget(form.add, {'attr': {'class': 'btn btn-warning  w-25'}}) }}
                     {{ form_end(form) }}
+                    {% if app.user is same as (product.creator) %}
+                    <form action="{{ path('product.delete', {'id': product.id}) }}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                {% endif %}
             </div>
         </div>
     </div>
