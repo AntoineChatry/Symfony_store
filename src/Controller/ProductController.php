@@ -11,7 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\CreateProductForm;
+use App\Form\AddQuestionType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Question;
+
 
 /**
  * Class ProductController
@@ -20,10 +23,24 @@ use Doctrine\ORM\EntityManagerInterface;
 class ProductController extends AbstractController
 {
     /**
-     * @Route("/product/{id}", name="product.detail")
+     * @Route("/product/{id}", name="product.detail", methods={"GET", "POST"})
+     * @param String $id
+     * @param ProductRepository $productRepository
+     * @return Response
      */
-    public function detail(Product $product, Request $request, CartManager $cartManager): Response
+    public function detail(string $id, ProductRepository $productRepository, Product $product, Request $request, CartManager $cartManager, EntityManagerInterface $em ): Response
     {
+        $question = new Question();
+        $fo = $this->createForm(AddQuestionType::class, $question);
+        $fo->handleRequest($request);
+        if ($fo->isSubmitted() && $fo->isValid()) {
+            $question = $fo->getData();
+            $question->setCreator($this->getUser());
+            $product->addQuestion($question);
+            $em->persist($question);
+            $em->flush();
+        }
+
         $form = $this->createForm(AddToCartType::class);
         $form->handleRequest($request);
         if($form->isSubmitted() &&  $form->isValid()){
@@ -42,6 +59,7 @@ class ProductController extends AbstractController
         return $this->render('product/detail.html.twig', [
             'product' => $product,
             'form' => $form->createView(),
+            'questionform' => $fo->createView(),
         ]);
     }
     /**
@@ -76,5 +94,25 @@ class ProductController extends AbstractController
         $em->flush();
         return $this->redirectToRoute('home');
     }
+    // Edit button
+    /**
+     * @Route("/product/edit/{id}", name="product.edit")
+     */
+    public function edit(Product $product, Request $request, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(CreateProductForm::class, $product);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $product = $form->getData();
+            $product->setCreator($this->getUser());
+            $product->setDate(new \DateTime());
 
+            $em->persist($product);
+            $em->flush();
+            return $this->redirectToRoute('home');
+        }
+        return $this->render('product/edit.html.twig', [
+            'editForm' => $form->createView(),
+        ]);
+    }
 }

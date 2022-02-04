@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Add Products{% endblock %}
+{% block title %}Ajouter un Produit{% endblock %}
 
 {% block body %}
 
-    <h1>Add Products</h1>
+    <h1>Ajouter un produit</h1>
 
 {% if(app.user == null) %}
     <div class="alert alert-primary d-flex flex-column mt-4" role="alert">
-        <p class="lh-1">You must be logged for add a product <p>
-        <a href="{{ path('login') }}">Go login!</a>                
+        <p class="lh-1">Vous devez être connecté pour ajouter un produit !<p>
+        <a href="{{ path('login') }}">Login!</a>                
     </div>
 {% else %}
     <div class="container">
@@ -17,7 +17,7 @@
             <div class="col-md-6">
                {{ form_start(addForm) }}
                {{ form_widget(addForm) }}
-               <button class="btn btn-primary mt-3" type="submit">Add</button>
+               <button class="btn btn-primary mt-3" type="submit">Ajouter</button>
                {{ form_end(addForm) }}
             </div>
         </div>

@@ -56,6 +56,16 @@ class Product
      */
     private $creator;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Question::class, mappedBy="product")
+     */
+    private $questions;
+
+    public function __construct()
+    {
+        $this->questions = new ArrayCollection();
+    }
+
     public function getCreator(): ?User
     {
         return $this->creator;
@@ -125,5 +135,34 @@ class Product
     public function getTag(): ?Tag
     {
         return $this->tag;
+    }
+    /**
+     * @return Collection|Question[]
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Question $question): self
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions[] = $question;
+            $question->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): self
+    {
+        if ($this->questions->removeElement($question)) {
+            // set the owning side to null (unless already changed)
+            if ($question->getProduct() === $this) {
+                $question->setProduct(null);
+            }
+        }
+
+        return $this;
     }
 }

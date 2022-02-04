@@ -18,13 +18,27 @@
             My Shop
         </a>
         <div class="navbar-nav">
-        <a href="{{ path('app_logout') }}" class="btn btn-dark">
-            Logout
-        </a>
+            <a href="{{ path('user') }}" class="btn btn-dark ">Mes produits</a>
         </div>
         <div class="navbar-nav">
+            <a href="{{ path('addProducts') }}" class="btn btn-dark ">Ajouter un produit</a>
+        </div>
+        <div class="navbar-nav">
+        <a href="{{ path('app_logout') }}" class="btn btn-dark">
+            Déconnexion
+        </a>
+        </div>
+        {% if app.user == null %}
+        <div class="navbar-nav">
+            <a href="{{ path('login') }}" class="btn btn-primary ">Connexion</a>
+        </div>
+        <div class="navbar-nav">
+            <a href="{{ path('app_register') }}" class="btn btn-secondary ">Inscription</a>
+        </div>
+        {% endif %}
+        <div class="navbar-nav">
             <a href="{{ path('cart') }}" class="btn btn-light">
-                Cart
+                Panier
             </a>
         </div>
     </nav>

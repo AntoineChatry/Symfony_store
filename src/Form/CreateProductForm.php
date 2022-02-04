@@ -18,9 +18,9 @@ class CreateProductForm extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Product name',
+                'label' => 'Nom du produit',
                 'attr' => [
-                    'placeholder' => 'Product name',
+                    'placeholder' => 'Nom du produit',
                 ],
             ])
             ->add('description', TextType::class, [
@@ -30,9 +30,9 @@ class CreateProductForm extends AbstractType
                 ],
             ])
             ->add('price', MoneyType::class, [
-                'label' => 'Price',
+                'label' => 'Prix',
                 'attr' => [
-                    'placeholder' => 'Price',
+                    'placeholder' => 'Prix',
                 ],
             ])
             ->add('tag', EntityType::class, [
@@ -52,4 +52,7 @@ class CreateProductForm extends AbstractType
             'data_class' => Product::class,
         ]);
     }
+
+   
+
 }
