@@ -1,6 +1,8 @@
 # Symfony_store
 Symfony store project
 
+Symfony 6.0.3
+
 Start:
 ```
 docker compose up -d
